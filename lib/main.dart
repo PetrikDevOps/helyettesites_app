@@ -19,7 +19,7 @@ class PetrikApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp.router( 
       title: 'Petrik',
       debugShowCheckedModeBanner: false,
       routerConfig: Routes.router,
