@@ -1,14 +1,19 @@
 
 import 'package:flutter/material.dart';
+import 'package:helyettesites/login/login_form.dart';
 import 'package:helyettesites/user/user_helper.dart';
 import 'package:helyettesites/utils/widgets/w_error.dart';
 import 'package:helyettesites/utils/widgets/w_loading.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key}); 
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
+
+//Bulind the base of the login page 
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
@@ -27,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text('Login Page'),
+          title: const Text("Bejelentkezés"),
           backgroundColor: Colors.transparent,
         ),
         body: SafeArea(
@@ -38,12 +43,10 @@ class _LoginPageState extends State<LoginPage> {
                 duration: const Duration(milliseconds: 500),
                 switchInCurve: Curves.easeIn,
                 switchOutCurve: Curves.easeOut,
-                transitionBuilder: (Widget child, Animation<double> animation) {
-                   
-                  //return ScaleTransition(scale: animation, child: child);
+                transitionBuilder: (Widget child, Animation<double> animation) {                   
                   return FadeTransition(opacity: animation, child: child);
                 },
-                child: _buildContent(snapshot), // Helper method for readability
+                child: _buildContent(snapshot),
               );
             },
           ),
@@ -52,20 +55,28 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
+  // Build content based on the state of the future snapshot
   Widget _buildContent(AsyncSnapshot snapshot) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return WLoading(
-        key: ValueKey('loading'), // Unique key for AnimatedSwitcher
+        key: ValueKey('loading'),
       );
     } else if (snapshot.hasError) {
       return WError(
-        key: ValueKey('error'), // Unique key for AnimatedSwitcher
+        key: ValueKey('error'),
         error: snapshot.error.toString(),
       );
     } else {
+      if (snapshot.data == false) {
+        return  Center(
+          key: ValueKey('login'),
+          child: LoginForm(),
+        );
+      }
       return const Center(
-        key: ValueKey('success'), // Unique key for AnimatedSwitcher
-        child: Text('Login successful'),
+        key: ValueKey('logout'),
+        child: Text('Logout form'),
       );
     }
   }
