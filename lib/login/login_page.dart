@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:helyettesites/login/login_form.dart';
 import 'package:helyettesites/user/user_helper.dart';
+import 'package:helyettesites/utils/helpers/h_drop_down.dart';
 import 'package:helyettesites/utils/widgets/w_error.dart';
 import 'package:helyettesites/utils/widgets/w_loading.dart';
 
@@ -29,15 +29,20 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-      child: Scaffold(
+      child: Scaffold( 
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: const Text("Bejelentkezés"),
           backgroundColor: Colors.transparent,
+          title: Text("Bejelentkezés", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
         ),
         body: SafeArea(
-          child: FutureBuilder(
-            future: UserHelper.isUserInLs(),
+          child: FutureBuilder<List<dynamic>>(
+            future: Future.wait([
+              UserHelper.isUserInLs(),
+              UserHelper.getUserFromLs(context),
+              HDropDown.getTeachers(context),
+              HDropDown.getClasses(context),
+            ]),
             builder: (context, snapshot) {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
@@ -62,13 +67,13 @@ class _LoginPageState extends State<LoginPage> {
       return WLoading(
         key: ValueKey('loading'),
       );
-    } else if (snapshot.hasError) {
+    } else if (snapshot.hasError || snapshot.data[2] == false || snapshot.data[3] == false) {
       return WError(
         key: ValueKey('error'),
         error: snapshot.error.toString(),
       );
     } else {
-      if (snapshot.data == false) {
+      if (snapshot.data[0] == false && snapshot.data[2] == true && snapshot.data[3] == true) {
         return  Center(
           key: ValueKey('login'),
           child: LoginForm(),

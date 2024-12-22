@@ -18,28 +18,34 @@ class UserHelper {
     }
   }
 
-  static void getUserFromLs(BuildContext context) async {
+  static Future<bool> getUserFromLs(BuildContext context) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userType = prefs.getString('userType');
     final String? name = prefs.getString('name');
     final int? teacherId = prefs.getInt('teacherId');
     final int? classId = prefs.getInt('classId');
+    bool success = false;
     if (userType == null) {
-      return;
+      return success;
     }
+
 
     switch (userType) {
       case 'teacher':
         User user = User.teacher(name: name!, teacherId: teacherId!);
         context.read<UserProvider>().setUser(user);
+        success = true;
         break;
       case 'student':
         User user = User.student(name: name!, classId: classId!);
         context.read<UserProvider>().setUser(user);
+        success = true;
         break;
       default:
-        return;
+        success = false;
+        break;
     }
+    return success;
   }
 
   static Future<bool> saveToStorage(User user) async {
