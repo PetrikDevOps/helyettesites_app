@@ -79,9 +79,15 @@ class _LoginPageState extends State<LoginPage> {
           child: LoginForm(),
         );
       }
-      return const Center(
+      return Center(
         key: ValueKey('logout'),
-        child: Text('Logout form'),
+        child: ElevatedButton(
+          onPressed: () async {
+            await UserHelper.removeUserFromLs();
+            setState(() {});
+          },
+          child: Text('Kijelentkezés'),
+        ),
       );
     }
   }

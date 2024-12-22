@@ -6,69 +6,88 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 
 class UserHelper {
-  // testing if user is in local storage
-  static Future<bool> isUserInLs() async {
-    await Future.delayed(Duration(seconds: 2)); 
-    try {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      final String? userType = prefs.getString('userType');
-      return userType != null;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  static Future<bool> getUserFromLs(BuildContext context) async {
+  static Future<bool> isUserInLs() async { 
+  try {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? userType = prefs.getString('userType');
-    final String? name = prefs.getString('name');
-    final int? teacherId = prefs.getInt('teacherId');
-    final int? classId = prefs.getInt('classId');
-    bool success = false;
-    if (userType == null) {
-      return success;
-    }
+    print('checking user type');
+    print('user type: $userType');
+    return userType != null;
+  } catch (e) {
+    print('error in isUserInLs: $e');
+    return false;
+  }
+  }
+
+  static Future<bool> removeUserFromLs() async {
+  try {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('userType');
+    await prefs.remove('name');
+    await prefs.remove('teacherId');
+    await prefs.remove('classId');
+    return true;
+  } catch (e) {
+    print('error in removeUserFromLs: $e');
+    return false;
+  }
+  }
 
 
+  static Future<bool> getUserFromLs(BuildContext context) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? userType = prefs.getString('userType');
+  final String? name = prefs.getString('name');
+  final int? teacherId = prefs.getInt('teacherId');
+  final int? classId = prefs.getInt('classId');
+  
+  if (userType == null) return false;
+
+  try {
     switch (userType) {
       case 'teacher':
         User user = User.teacher(name: name!, teacherId: teacherId!);
         context.read<UserProvider>().setUser(user);
-        success = true;
-        break;
+        return true;
       case 'student':
         User user = User.student(name: name!, classId: classId!);
         context.read<UserProvider>().setUser(user);
-        success = true;
-        break;
+        return true;
       default:
-        success = false;
-        break;
+        return false;
     }
-    return success;
+  } catch (e) {
+    print('error in getUserFromLs: $e');
+    return false;
+  }
   }
 
-  static Future<bool> saveToStorage(User user) async {
-    final SharedPreferencesAsync asyncPrefs = SharedPreferencesAsync(); 
-    bool success = false;
 
-    //setting the user type 
-    switch (user.userType) {
-      case UserType.teacher:
-        await asyncPrefs.setString('userType', 'teacher');
-        await asyncPrefs.setInt('teacherId', user.teacherId!);
-        await asyncPrefs.setString('name', user.name);
-        success = true; 
-        break;
-      case UserType.student:
-        await asyncPrefs.setString('userType', 'student');
-        await asyncPrefs.setInt('classId', user.classId!);
-        await asyncPrefs.setString('name', user.name);
-        success = true;
-        break;
-      default:
-        break;
-    } 
-    return success;
+  static Future<bool> saveToStorage(User user) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool success = false;
+  print('saving to storage');
+  
+  // Setting the user type 
+  switch (user.userType) {
+    case UserType.teacher:
+      await prefs.setString('userType', 'teacher');
+      await prefs.setInt('teacherId', user.teacherId!);
+      await prefs.setString('name', user.name);
+      print('teacher data saved');
+      success = true; 
+      break;
+    case UserType.student:
+      await prefs.setString('userType', 'student');
+      await prefs.setInt('classId', user.classId!);
+      await prefs.setString('name', user.name);
+      print('student data saved');
+      success = true;
+      break;
+    default:
+      print('invalid user type');
+      break;
   } 
+  return success;
+  }
 }

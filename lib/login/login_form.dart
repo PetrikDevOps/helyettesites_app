@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:helyettesites/user/user_helper.dart';
 import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/utils/models/drop_down_able.dart';
 import 'package:helyettesites/utils/providers/p_classes.dart';
@@ -60,19 +61,13 @@ class _LoginFormState extends State<LoginForm> {
   }
 
 
-  Widget _buildTeacher() {
-    return Column(
+  Widget _buildTeacher(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    return Row(
       children: [
-        TextField(
-          decoration: InputDecoration(
-            labelText: 'Név',
-          ),
-        ),
-        TextField(
-          decoration: InputDecoration(
-            labelText: 'Jelszó',
-          ),
-        ),  
+        Text("Név: ", style: TextStyle(color: Colors.white, fontSize: width * 0.05)),
+        SizedBox(width: width * 0.05),
+        _buildDropDown(context),
       ],
     );
   }
@@ -101,6 +96,7 @@ class _LoginFormState extends State<LoginForm> {
         Row(
           children: [
             Text("Osztály: ", style: TextStyle(color: Colors.white, fontSize: width * 0.05)),
+            SizedBox(width: width * 0.05),
             _buildDropDown(context)
           ],
         ),  
@@ -140,31 +136,37 @@ class _LoginFormState extends State<LoginForm> {
                   },
                 ),
                 if (_userType == UserType.student) _buildStudent(context, name),
-                if (_userType == UserType.teacher) _buildTeacher(),
+                if (_userType == UserType.teacher) _buildTeacher(context),
               ],
             ),
           ),
           Column(
             children: [
               ElevatedButton(
-                onPressed: () { 
-                  if (_userType == UserType.student) {
-                    String name1 = name.text;
-                    int classId1 = 1;
-                    context.read<UserProvider>().setUser(User.student(name: name1, classId: classId1));
-                  } else if (_userType == UserType.teacher) {
-                    String name1 = name.text;
-                    int teacherId1 = 1;
-                    context.read<UserProvider>().setUser(User.teacher(name: name1, teacherId: teacherId1));
-                  }
-                  context.go('/substitute');
-                },
-                child: Text('Belépés', style: TextStyle(fontSize: width * 0.05)),
-              ),
-              SizedBox(height: height * 0.05),
-            ],
-          ),
-        ],
-      );
+               onPressed: () async{ 
+                if (_userType == UserType.student) {
+                  String oName = name.text;
+                  int oClassId = Provider.of<PClasses>(context, listen: false).selectedClass.id;
+                  User s = User.student(name: oName, classId: oClassId);
+                  Provider.of<UserProvider>(context, listen: false).setUser(s);
+                  UserHelper.saveToStorage(s);
+                } else if (_userType == UserType.teacher) {
+                  String oName = Provider.of<PTeachers>(context, listen: false).selectedTeacher.name;
+                  int oTeacherId = Provider.of<PTeachers>(context, listen: false).selectedTeacher.id;
+                  User t = User.teacher(name: oName, teacherId: oTeacherId);
+                  Provider.of<UserProvider>(context, listen: false).setUser(t);
+                  await UserHelper.saveToStorage(t);
+                  print('teacher'); 
+                  print(await UserHelper.isUserInLs());
+                }
+                context.go('/substitute');
+              },
+              child: Text('Belépés', style: TextStyle(fontSize: width * 0.05)),
+            ),
+            SizedBox(height: height * 0.05),
+          ],
+        ),
+      ],
+    );
   }
 }
