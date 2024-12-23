@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:helyettesites/login/login_page.dart';
+import 'package:helyettesites/substitutions/sub_page.dart';
 
 class Routes {
   static final router = GoRouter(
@@ -13,7 +13,7 @@ class Routes {
       ),
       GoRoute(
         path: '/substitute',
-        builder: (context, state) => Container(),
+        builder: (context, state) => SubPage(),
       ),
     ],
   );

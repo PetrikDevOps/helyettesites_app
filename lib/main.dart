@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:helyettesites/routes/routes.dart';
 import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/utils/providers/p_classes.dart';
@@ -23,6 +24,9 @@ class PetrikApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]
+    );
     return MaterialApp.router(  
       title: 'Petrik',
       debugShowCheckedModeBanner: false,

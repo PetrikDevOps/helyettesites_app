@@ -12,7 +12,7 @@ class WError extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(error),
-          Lottie.network("https://lottie.host/986cd9ef-f5ce-4dad-a278-e4836f3521a5/H9QElbACji.json"),
+          Lottie.asset('assets/error.json'),
         ],
       )
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:helyettesites/user/user.dart';
 
 class UserProvider extends ChangeNotifier {
-  User _user = User.guest();  
+  User _user = User.none();  
   User get user => _user;
 
   void setUser(User user) {
@@ -11,7 +11,7 @@ class UserProvider extends ChangeNotifier {
   }
 
   void clearUser() {
-    _user = User.guest();
+    _user = User.none();
     notifyListeners();
   }
 }

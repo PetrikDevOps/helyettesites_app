@@ -6,6 +6,7 @@ class User {
   int? teacherId;
   int? classId;
 
+  User.none() : userType = UserType.none, name = '';
   User.guest() : userType = UserType.guest, name = ''; 
   User.teacher({required this.name, required this.teacherId}) : userType = UserType.teacher;
   User.student({required this.name, required this.classId}) : userType = UserType.student;

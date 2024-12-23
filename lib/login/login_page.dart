@@ -30,11 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
       child: Scaffold( 
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: Text("Bejelentkezés", style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold)),
-        ),
+        backgroundColor: Colors.transparent, 
         body: SafeArea(
           child: FutureBuilder<List<dynamic>>(
             future: Future.wait([
@@ -51,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
                 transitionBuilder: (Widget child, Animation<double> animation) {                   
                   return FadeTransition(opacity: animation, child: child);
                 },
-                child: _buildContent(snapshot),
+                child: _buildContent(snapshot, context),
               );
             },
           ),
@@ -62,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
 
 
   // Build content based on the state of the future snapshot
-  Widget _buildContent(AsyncSnapshot snapshot) {
+  Widget? _buildContent(AsyncSnapshot snapshot, BuildContext context) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return WLoading(
         key: ValueKey('loading'),
@@ -73,23 +69,11 @@ class _LoginPageState extends State<LoginPage> {
         error: snapshot.error.toString(),
       );
     } else {
-      if (snapshot.data[0] == false && snapshot.data[2] == true && snapshot.data[3] == true) {
         return  Center(
           key: ValueKey('login'),
           child: LoginForm(),
         );
       }
-      return Center(
-        key: ValueKey('logout'),
-        child: ElevatedButton(
-          onPressed: () async {
-            await UserHelper.removeUserFromLs();
-            setState(() {});
-          },
-          child: Text('Kijelentkezés'),
-        ),
-      );
-    }
   }
 }
 
