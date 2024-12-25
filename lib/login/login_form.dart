@@ -35,18 +35,31 @@ class _LoginFormState extends State<LoginForm> {
 
   Widget _buildDropDown(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    String actualId = _userType == UserType.student
+        ? context.watch<PClasses>().selectedClass.id
+        : context.watch<PTeachers>().selectedTeacher.id;
 
     List<DropDownAble> toDisplay = _userType == UserType.student
         ? context.watch<PClasses>().classes
         : context.watch<PTeachers>().teachers;
-    List<DropdownMenuEntry<DropDownAble>> dropdownMenuItems = toDisplay
-        .map((DropDownAble dropDownAble) => DropdownMenuEntry<DropDownAble>(
-              value: dropDownAble,
-              label: dropDownAble.name,
+    List<DropdownMenuEntry<DropDownAble>> dropdownMenuItems = toDisplay.asMap().entries
+        .map((entry) => DropdownMenuEntry<DropDownAble>(
+              value: entry.value,
+              label: entry.value.name,              style: ButtonStyle(
+                textStyle: MaterialStateProperty.all<TextStyle>(
+                    TextStyle(color: Colors.white, fontSize: width * 0.04)),
+                backgroundColor: entry.value.id == actualId ? MaterialStateProperty.all<Color>(Color(0xFF25544B)) : entry.key % 2 == 0 ? MaterialStateProperty.all<Color>(Color(0x00000000)) : MaterialStateProperty.all<Color>(Color(0x10000000)),
+                foregroundColor: entry.value.id == actualId ? MaterialStateProperty.all<Color>(Color(0xFFFAFAF9)) : MaterialStateProperty.all<Color>(Color(0xFF25544B)),
+              
+              ),
             ))
         .toList();
 
     return DropdownMenu(
+      menuStyle: MenuStyle( 
+        maximumSize: MaterialStateProperty.all<Size>(Size(width * 0.7, height * 0.5)), 
+      ),
       initialSelection: _userType == UserType.student
           ? context.watch<PClasses>().selectedClass
           : context.watch<PTeachers>().selectedTeacher,
@@ -78,14 +91,14 @@ class _LoginFormState extends State<LoginForm> {
   Widget _buildTeacher(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text("Név: ",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: width * 0.06,
                 fontWeight: FontWeight.bold)),
-        SizedBox(width: width * 0.05),
-        _buildDropDown(context),
+        _buildDropDown(context), 
       ],
     );
   }
@@ -96,21 +109,25 @@ class _LoginFormState extends State<LoginForm> {
     return Column(
       children: [
         SizedBox(height: height * 0.025),
+        SizedBox(
+          width: width * 0.7,
+          child:
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Osztály: ",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: width * 0.06,
-                    fontWeight: FontWeight.bold)),
-            SizedBox(width: width * 0.1),
+                    fontWeight: FontWeight.bold)), 
             _buildDropDown(context)
           ],
+        ),
         ),
         SizedBox(
           width: width * 0.7,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text("Név: ",
@@ -119,7 +136,7 @@ class _LoginFormState extends State<LoginForm> {
                       fontSize: width * 0.06,
                       fontWeight: FontWeight.bold)),
               SizedBox(
-                width: width * 0.53,
+                width: width * 0.45,
                 child: TextField(
                   style: TextStyle(color: Colors.white, fontSize: width * 0.05),
                   controller: name,
@@ -137,7 +154,6 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
         ),
-        SizedBox(height: height * 0.025),
       ],
     );
   }
@@ -153,7 +169,6 @@ class _LoginFormState extends State<LoginForm> {
       children: [
         SizedBox(
           width: width * 0.8,
-          height: height * 0.4,
           child: Container(
             margin: EdgeInsets.only(top: height * 0.04),
             decoration: BoxDecoration(
@@ -170,7 +185,7 @@ class _LoginFormState extends State<LoginForm> {
                   Text(
                     'Kérlek válassz egy felhasználó típust:',
                     style: TextStyle(
-                        fontSize: width * 0.07,
+                        fontSize: width * 0.035,
                         fontWeight: FontWeight.bold,
                         color: Color(0xFFFAFAF9)),
                   ),
@@ -201,6 +216,7 @@ class _LoginFormState extends State<LoginForm> {
                   if (_userType == UserType.student)
                     _buildStudent(context, name),
                   if (_userType == UserType.teacher) _buildTeacher(context),
+                  SizedBox(height: height * 0.02),
                 ],
               ),
             ),
@@ -223,7 +239,7 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () async {
                 if (_userType == UserType.student) {
                   String oName = name.text;
-                  int oClassId = Provider.of<PClasses>(context, listen: false)
+                  String oClassId = Provider.of<PClasses>(context, listen: false)
                       .selectedClass
                       .id;
                   User s = User.student(name: oName, classId: oClassId);
@@ -234,7 +250,7 @@ class _LoginFormState extends State<LoginForm> {
                   String oName = Provider.of<PTeachers>(context, listen: false)
                       .selectedTeacher
                       .name;
-                  int oTeacherId = Provider.of<PTeachers>(context, listen: false)
+                  String oTeacherId = Provider.of<PTeachers>(context, listen: false)
                       .selectedTeacher
                       .id;
                   User t = User.teacher(name: oName, teacherId: oTeacherId);

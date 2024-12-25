@@ -5,7 +5,7 @@ class PClasses extends ChangeNotifier {
   List<DropDownAble> _classes = [];
   List<DropDownAble> get classes => _classes;
 
-  DropDownAble _selectedClass = DropDownAble(id: -1, name: 'Osztály');
+  DropDownAble _selectedClass = DropDownAble(id: "", name: 'Osztály');
   DropDownAble get selectedClass => _selectedClass;
 
   void setSelectedClass(DropDownAble selectedClass) {

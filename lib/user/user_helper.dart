@@ -38,8 +38,8 @@ class UserHelper {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String? userType = prefs.getString('userType');
   final String? name = prefs.getString('name');
-  final int? teacherId = prefs.getInt('teacherId');
-  final int? classId = prefs.getInt('classId');
+  final String? teacherId = prefs.getString('teacherId');
+  final String? classId = prefs.getString('classId');
   
   if (userType == null) return false;
 
@@ -72,14 +72,14 @@ class UserHelper {
   switch (user.userType) {
     case UserType.teacher:
       await prefs.setString('userType', 'teacher');
-      await prefs.setInt('teacherId', user.teacherId!);
+      await prefs.setString('teacherId', user.teacherId!);
       await prefs.setString('name', user.name);
       print('teacher data saved');
       success = true; 
       break;
     case UserType.student:
       await prefs.setString('userType', 'student');
-      await prefs.setInt('classId', user.classId!);
+      await prefs.setString('classId', user.classId!);
       await prefs.setString('name', user.name);
       print('student data saved');
       success = true;

@@ -3,8 +3,8 @@ import 'package:helyettesites/user/user_type.dart';
 class User {
   UserType userType; 
   String name;
-  int? teacherId;
-  int? classId;
+  String? teacherId;
+  String? classId;
 
   User.none() : userType = UserType.none, name = '';
   User.guest() : userType = UserType.guest, name = ''; 

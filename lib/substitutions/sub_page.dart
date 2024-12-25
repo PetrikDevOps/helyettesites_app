@@ -5,7 +5,7 @@ import 'package:helyettesites/user/user_provider.dart';
 import 'package:provider/provider.dart';
 
 class SubPage extends StatefulWidget{
-  const SubPage({Key? key}) : super(key: key);
+  const SubPage({super.key});
 
   @override
   _SubPageState createState() => _SubPageState();
@@ -32,8 +32,8 @@ class _SubPageState extends State<SubPage>{
           child: Center(
             child: ElevatedButton(
               onPressed: () async{
-                context.read<UserProvider>().clearUser();
                 await UserHelper.removeUserFromLs();
+                context.read<UserProvider>().clearUser();
                 context.go('/home');
               },
               child: const Text('Log Out'),

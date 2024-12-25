@@ -6,8 +6,13 @@ class WLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Lottie.asset('assets/loading.json'),
+
+    double width = MediaQuery.of(context).size.width;
+    return Container(
+      margin: EdgeInsets.all(width * 0.2),
+      child: Center(
+        child: Lottie.asset('assets/loading.json'),
+      ),
     );
   }
 }

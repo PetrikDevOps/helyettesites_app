@@ -5,7 +5,7 @@ class PTeachers extends ChangeNotifier {
   List<DropDownAble> _teachers = [];
   List<DropDownAble> get teachers => _teachers;
   
-  DropDownAble _selectedTeacher = DropDownAble(id: -1, name: 'Tanár');
+  DropDownAble _selectedTeacher = DropDownAble(id: "", name: 'Tanár');
   DropDownAble get selectedTeacher => _selectedTeacher;
 
   void setSelectedTeacher(DropDownAble selectedTeacher) {
