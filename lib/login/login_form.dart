@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:helyettesites/user/user_helper.dart';
 import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/utils/models/drop_down_able.dart';
 import 'package:helyettesites/utils/providers/p_classes.dart';
@@ -236,7 +235,7 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                 ),
               ),
-              onPressed: () async {
+              onPressed: () {
                 if (_userType == UserType.student) {
                   String oName = name.text;
                   String oClassId = Provider.of<PClasses>(context, listen: false)
@@ -245,8 +244,7 @@ class _LoginFormState extends State<LoginForm> {
                   User s = User.student(name: oName, classId: oClassId);
                   Provider.of<UserProvider>(context, listen: false)
                       .setUser(s);
-                  UserHelper.saveToStorage(s);
-                } else if (_userType == UserType.teacher) {
+                  } else if (_userType == UserType.teacher) {
                   String oName = Provider.of<PTeachers>(context, listen: false)
                       .selectedTeacher
                       .name;
@@ -256,7 +254,6 @@ class _LoginFormState extends State<LoginForm> {
                   User t = User.teacher(name: oName, teacherId: oTeacherId);
                   Provider.of<UserProvider>(context, listen: false)
                       .setUser(t);
-                  await UserHelper.saveToStorage(t);
                 }
                 context.go('/substitute');
               },

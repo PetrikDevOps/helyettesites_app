@@ -87,7 +87,8 @@ class UserHelper {
     default:
       print('invalid user type');
       break;
-  } 
+  }
+  await Future.delayed(const Duration(seconds: 1));
   return success;
   }
 }

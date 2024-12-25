@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:helyettesites/user/user.dart';
 import 'package:helyettesites/user/user_helper.dart';
 import 'package:helyettesites/user/user_provider.dart';
+import 'package:helyettesites/utils/widgets/w_error.dart';
+import 'package:helyettesites/utils/widgets/w_loading.dart';
 import 'package:provider/provider.dart';
 
 class SubPage extends StatefulWidget{
@@ -12,8 +15,53 @@ class SubPage extends StatefulWidget{
 }
 
 class _SubPageState extends State<SubPage>{
+
+  Widget _buildContent(AsyncSnapshot snapshot, BuildContext context){
+    final User u = context.watch<UserProvider>().user;
+
+    if(snapshot.connectionState == ConnectionState.waiting){
+      return WLoading(key: ValueKey('loadingSub'));
+    }
+    if(snapshot.hasError){
+      return WError(error: snapshot.error.toString(), key: ValueKey('errorSub'));
+    }
+    if(snapshot.data == false){
+      return Center(
+        key: ValueKey('notLoggedIn'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Nem sikerült bejelentkezni!'),
+            ElevatedButton(
+              onPressed: () => context.go('/home'),
+              child: Text('Bejelentkezés'),
+            ),
+          ],
+        ),
+      );
+    }
+    return Center(
+      key: ValueKey('loggedIn'),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Üdvözöllek ${u.name}!'),
+          ElevatedButton(
+            onPressed: () async {
+              await UserHelper.removeUserFromLs();
+              context.read<UserProvider>().setUser(User.none());
+              context.go('/home');
+          },
+            child: Text('Kijelentkezés'),
+          ),
+        ],
+      ),
+    );
+  } 
+
   @override
   Widget build(BuildContext context){
+    final User u = context.watch<UserProvider>().user;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -29,15 +77,19 @@ class _SubPageState extends State<SubPage>{
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
-          child: Center(
-            child: ElevatedButton(
-              onPressed: () async{
-                await UserHelper.removeUserFromLs();
-                context.read<UserProvider>().clearUser();
-                context.go('/home');
-              },
-              child: const Text('Log Out'),
-            ),
+          child: FutureBuilder<bool>(
+            future: UserHelper.saveToStorage(u),              
+            builder: (context, snapshot) {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 500),
+                switchInCurve: Curves.easeIn,
+                switchOutCurve: Curves.easeOut,
+                transitionBuilder: (Widget child, Animation<double> animation) {                   
+                  return FadeTransition(opacity: animation, child: child);
+                },
+                child: _buildContent(snapshot, context),
+              );
+            },
           ),
         ),
       ),
