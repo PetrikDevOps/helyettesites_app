@@ -53,6 +53,10 @@ class UserHelper {
         User user = User.student(name: name!, classId: classId!);
         context.read<UserProvider>().setUser(user);
         return true;
+        case 'guest':
+        User user = User.guest();
+        context.read<UserProvider>().setUser(user);
+        return true;
       default:
         return false;
     }
@@ -82,6 +86,11 @@ class UserHelper {
       await prefs.setString('classId', user.classId!);
       await prefs.setString('name', user.name);
       print('student data saved');
+      success = true;
+      break;
+    case UserType.guest:
+      await prefs.setString('userType', 'guest'); 
+      print('guest data saved');
       success = true;
       break;
     default:

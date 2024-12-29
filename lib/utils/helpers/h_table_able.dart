@@ -1,57 +1,134 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
+import 'package:helyettesites/user/user.dart';
+import 'package:helyettesites/user/user_provider.dart';
+import 'package:helyettesites/user/user_type.dart';
 import 'package:helyettesites/utils/models/table_able.dart';
 import 'package:helyettesites/utils/providers/p_sub.dart';
 import 'package:provider/provider.dart';
 
 class HTableAble {
-  static String url = "https://hely-dev.petrik.lol/api";
-  static String classesUrl = "/class";
-  static String teachersUrl = "/teacher";
+  static String url = "https://hely-dev.petrik.lol/api/substitution";
   static Dio dio = Dio(BaseOptions(baseUrl: url));
 
 static Future<bool> getSub(BuildContext context) async {
 
-    var res = await dio.get(teachersUrl);
-    Map<String, dynamic> data = res.data;
-    List<TableAble> tables = (data["data"] as List).map((e) => TableAble.fromJson(e)).toList();
+    User user = context.read<UserProvider>().user;
+    List<String> sub_url = [];
+    switch (user.userType) {
+      case UserType.student:
+        sub_url = ['?classId=${user.classId}']; 
+        break;
+      case UserType.teacher:
+        sub_url = ['?teacherId=${user.teacherId}', '?missingTeacherId=${user.teacherId}']; 
+        break;
+      case UserType.guest:
+        sub_url = [''];
+        break; 
+      default:
+        return false;
+    }
 
-    try {
-      context.read()<PSub>().setSubs(
-        await Future.delayed(Duration(seconds: 2), () => tables)
-      );
-      return true;
-    } catch (e) {
+    var res = await Future.wait(sub_url.map((e) => dio.get(url + e)));
+
+    if (res.any((element) => element.statusCode != 200)) {
       return false;
     }
-  }
 
-  static List<List<TableAble>> _groupAndOrder(List<TableAble> rows) {
-
-    List<List<TableAble>> result = [];
-    List<TableAble> temp = [];
-    DateTime? lastDate;
-    int? lastLesson; 
-    rows.sort((a, b) => a.date.compareTo(b.date));
-    rows.sort((a, b) => a.lesson.compareTo(b.lesson)); 
-    rows.forEach((element) {
-      if (lastDate == null || lastDate != element.date || lastLesson != element.lesson) {
-        if (temp.isNotEmpty) {
-          result.add(temp);
-          temp = [];
-        }
-        lastDate = element.date;
-        lastLesson = element.lesson;
-      }
-      temp.add(element);
-    });
-    if (temp.isNotEmpty) {
-      result.add(temp);
+    if ( res.any((element) => element.data["status"] != "success")) {
+      return false;
     }
-    return result;
+
+    List<TableAble> temp = [];
+
+    res.forEach((element) {
+      List<TableAble> tables = (element.data["data"] as List).map((e) => TableAble.fromJson(e)).toList();
+      temp.addAll(tables);
+    });
+
+    List<DateTime> dates = temp.map((e) => e.date).toSet().toList();
+
+    List<List<List<TableAble>>> grouped = [];
+
+    dates.forEach((date) {
+      List<TableAble> temp2 = temp.where((element) => element.date == date).toList();
+      List<String> missingTeacherNames = temp2.map((e) => e.missingTeacerName).toSet().toList();
+
+      List<List<TableAble>> missingTeachersGroups = [];
+      missingTeacherNames.forEach((missingTeacher) {
+        List<TableAble> temp3 = temp2.where((element) => element.missingTeacerName == missingTeacher).toList();
+        temp3.sort((a, b) => a.lesson.compareTo(b.lesson));
+        missingTeachersGroups.add(temp3); 
+      });
+
+      grouped.add(missingTeachersGroups);
+    });
+
+    grouped.forEach((e) {
+      e.forEach((element) {
+        print(element);
+      });
+    });
+
+    if (context.mounted) {
+      context.read<PSub>().setSubs(grouped);
+      return true;
+    }
+    return false;
   }
 
-  static List<List<TableAble>> getGroupedAndOrderedSubs(BuildContext context) {
-    return _groupAndOrder(context.watch<PSub>().subs);
-  } 
+  static Widget _buildTable(BuildContext context, List<TableAble> tb) {
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+  
+    return SizedBox(
+      width: width * 0.8,
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Text('Dátum'),
+                Text('Óra'),
+                Text('Osztály'),
+                Text('Tanár'),
+                Text('Helyettesítő tanár'),
+              ],
+            ),
+            ...tb.map((e) => Row(
+              children: [
+                Text(e.date.toString()),
+                Text(e.lesson.toString()),
+                Text(e.className),
+                Text(e.missingTeacerName),
+                Text(e.subingTeacherName),
+              ],
+            )).toList(),
+          ]
+        ),
+      ),
+    ); 
+  }
+
+  static Widget buildList(BuildContext context) {
+    List<List<List<TableAble>>> subs = context.watch<PSub>().subs;
+  
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    return SizedBox(
+      width: width * 0.8,
+      height: height * 0.8,
+      child: ListView.builder(
+        itemCount: subs.length,
+        itemBuilder: (context, index) {
+          return Column(
+            children: [
+              Text(subs[index][0][0].date.toString()),
+              ...subs[index].map((e) => _buildTable(context, e)).toList(),
+            ],
+          );
+        },
+      ),
+    );
+  }
 }

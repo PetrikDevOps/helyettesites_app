@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:helyettesites/routes/routes.dart';
 import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/utils/providers/p_classes.dart';
+import 'package:helyettesites/utils/providers/p_sub.dart';
 import 'package:helyettesites/utils/providers/p_teachers.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ void main() {
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => PTeachers()),
         ChangeNotifierProvider(create: (context) => PClasses()),
+        ChangeNotifierProvider(create: (context) => PSub())
       ],
       child: const PetrikApp()
     )

@@ -24,7 +24,7 @@ class TableAble {
 
   @override
   String toString() {
-    return 'TableAble{id: $id, date: $date, consolidated: $consolidated, missingTeacerName: $missingTeacerName, subingTeacherName: $subingTeacherName, subjectName: $subjectName, roomName: $roomName, className: $className, lesson: $lesson}';
+    return 'date: $date, missingTeacerName: $missingTeacerName, subingTeacherName: $subingTeacherName, className: $className, lesson: $lesson';
   }
 
   factory TableAble.fromJson(Map<String, dynamic> json) {

@@ -1,8 +1,10 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:helyettesites/user/user.dart';
 import 'package:helyettesites/user/user_helper.dart';
 import 'package:helyettesites/user/user_provider.dart';
+import 'package:helyettesites/utils/helpers/h_table_able.dart';
 import 'package:helyettesites/utils/widgets/w_error.dart';
 import 'package:helyettesites/utils/widgets/w_loading.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +17,6 @@ class SubPage extends StatefulWidget{
 }
 
 class _SubPageState extends State<SubPage>{
-
   Widget _buildContent(AsyncSnapshot snapshot, BuildContext context){
     final User u = context.watch<UserProvider>().user;
 
@@ -54,6 +55,7 @@ class _SubPageState extends State<SubPage>{
           },
             child: Text('Kijelentkezés'),
           ),
+          HTableAble.buildList(context)
         ],
       ),
     );
@@ -62,6 +64,7 @@ class _SubPageState extends State<SubPage>{
   @override
   Widget build(BuildContext context){
     final User u = context.watch<UserProvider>().user;
+    
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -77,8 +80,11 @@ class _SubPageState extends State<SubPage>{
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SafeArea(
-          child: FutureBuilder<bool>(
-            future: UserHelper.saveToStorage(u),              
+          child: FutureBuilder<List<dynamic>>(
+            future: Future.wait([
+              UserHelper.saveToStorage(u),
+              HTableAble.getSub(context),
+            ]),              
             builder: (context, snapshot) {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),

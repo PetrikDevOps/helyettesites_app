@@ -18,9 +18,11 @@ static Future<bool> getTeachers(BuildContext context) async {
     List<DropDownAble> teachers = (data["data"] as List).map((e) => DropDownAble.fromJson(e)).toList();
 
     try {
+      if (context.mounted) {
       context.read<PTeachers>().setTeachers(
         await Future.delayed(Duration(seconds: 2), () => teachers)
       );
+      }
       return true;
     } catch (e) {
       return false;

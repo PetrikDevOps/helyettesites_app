@@ -254,6 +254,10 @@ class _LoginFormState extends State<LoginForm> {
                   User t = User.teacher(name: oName, teacherId: oTeacherId);
                   Provider.of<UserProvider>(context, listen: false)
                       .setUser(t);
+                } else {
+                  User g = User.guest();
+                  Provider.of<UserProvider>(context, listen: false)
+                      .setUser(g);
                 }
                 context.go('/substitute');
               },
