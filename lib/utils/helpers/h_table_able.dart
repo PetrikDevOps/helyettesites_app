@@ -8,7 +8,7 @@ import 'package:helyettesites/utils/providers/p_sub.dart';
 import 'package:provider/provider.dart';
 
 class HTableAble {
-  static String url = "https://hely-dev.petrik.lol/api/substitution";
+  static String url = "https://hely.petrik.lol/api/substitution";
   static Dio dio = Dio(BaseOptions(baseUrl: url));
 
 static Future<bool> getSub(BuildContext context) async {
@@ -82,32 +82,30 @@ static Future<bool> getSub(BuildContext context) async {
     double height = MediaQuery.of(context).size.height;
   
     return SizedBox(
-      width: width * 0.8,
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
+          width: width * 0.8,
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                Text('Dátum'),
-                Text('Óra'),
-                Text('Osztály'),
-                Text('Tanár'),
-                Text('Helyettesítő tanár'),
-              ],
+                Row(
+                  children: [
+                    Text(tb[0].missingTeacerName),  
+                  ],
+                ),
+                ...tb.map((e) => Row(
+                  children: [
+                    Text(e.lesson.toString()),
+                    Text(e.className), 
+                    Text(e.subingTeacherName),
+                  ],
+                )).toList(),
+              ]
             ),
-            ...tb.map((e) => Row(
-              children: [
-                Text(e.date.toString()),
-                Text(e.lesson.toString()),
-                Text(e.className),
-                Text(e.missingTeacerName),
-                Text(e.subingTeacherName),
-              ],
-            )).toList(),
-          ]
-        ),
-      ),
-    ); 
+          ),
+        );
+  }
+
+  static String _convertDate(DateTime date) {
+    return "${date.year} ${date.month} ${date.day}";
   }
 
   static Widget buildList(BuildContext context) {
@@ -116,16 +114,26 @@ static Future<bool> getSub(BuildContext context) async {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SizedBox(
-      width: width * 0.8,
+      width: width * 0.95,
       height: height * 0.8,
       child: ListView.builder(
         itemCount: subs.length,
         itemBuilder: (context, index) {
-          return Column(
-            children: [
-              Text(subs[index][0][0].date.toString()),
-              ...subs[index].map((e) => _buildTable(context, e)).toList(),
-            ],
+          return Container(
+            margin: EdgeInsets.all(width * 0.01),
+            decoration: BoxDecoration(
+              color: Color(0x4FE0E0E0),
+              borderRadius: BorderRadius.circular(width * 0.03),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Text(_convertDate(subs[index][0][0].date)),
+                  ...subs[index].map((e) => _buildTable(context, e)).toList(),
+                ],
+              ),
+            ),
           );
         },
       ),

@@ -6,7 +6,7 @@ import 'package:helyettesites/utils/providers/p_teachers.dart';
 import 'package:provider/provider.dart';
 
 class HDropDown {
-  static String url = "https://hely-dev.petrik.lol/api";
+  static String url = "https://hely.petrik.lol/api";
   static String classesUrl = "/class";
   static String teachersUrl = "/teacher";
   static Dio dio = Dio(BaseOptions(baseUrl: url));

@@ -34,7 +34,7 @@ class TableAble {
       lesson: json['lesson'],
       consolidated: json['consolidated'],
       missingTeacerName: json['missingTeacher']['name'],
-      subingTeacherName: json['teacher']['name'],
+      subingTeacherName: json['teacher']['short'],
       subjectName: json['subject']['name'],
       roomName: json['room']['name'],
       className: json['class']['name'],
