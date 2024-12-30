@@ -134,13 +134,14 @@ static Future<bool> getSub(BuildContext context) async {
                   ...tb.asMap().entries.map((entry) {
                     int index = entry.key;
                     var e = entry.value;
-            
+                    BorderRadius borderRadius = index == tb.length - 1 ? BorderRadius.only(bottomLeft: Radius.circular(width * 0.03), bottomRight: Radius.circular(width * 0.03)) : BorderRadius.circular(0);
                     // Decide the background color based on whether the index is even or odd
-                    Color backgroundColor = index % 2 == 0 ? Color(0x5F808080) : Color(0x00000000);
+                    Color backgroundColor = index % 2 == 0 ? Color(0x20FFFFFF) : Color(0x00000000);
             
                     return Container(
                       decoration: BoxDecoration( 
                         color: backgroundColor,
+                        borderRadius: borderRadius,
                         border: Border(
                           top: BorderSide(color: Color(0xFFF0F0F0)),
                         )
