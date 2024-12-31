@@ -5,6 +5,7 @@ import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/user/user_type.dart';
 import 'package:helyettesites/utils/models/table_able.dart';
 import 'package:helyettesites/utils/providers/p_sub.dart';
+import 'package:helyettesites/utils/widgets/w_scrollable_autoscrolling_text.dart';
 import 'package:provider/provider.dart';
 
 class HTableAble {
@@ -78,26 +79,7 @@ static Future<bool> getSub(BuildContext context) async {
   }
 
   static Widget _buildScrollAbleText(BuildContext context, String text, Border border) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
-    return Container(
-      decoration: BoxDecoration(
-        border: border, 
-      ),
-      child: SizedBox(
-        width: width * 0.95,
-        height: height * 0.8,
-        child: Center(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(width * 0.01, 0, width*0.01, 0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Center(child: Text(text, style: TextStyle(color: Color(0xDFFFFFFF), fontSize: width * 0.05))),
-            ),
-          ),
-        ),
-      ),
-    );
+    return WScrollableAutoscrollingText(text: text, border: border);  
   }
 
   static Widget _buildTable(BuildContext context, List<TableAble> tb) {
