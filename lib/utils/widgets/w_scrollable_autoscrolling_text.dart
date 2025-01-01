@@ -38,9 +38,9 @@ class _WScrollableAutoscrollingTextState extends State<WScrollableAutoscrollingT
     super.dispose();
   }
 
-
   void _scroll(BuildContext context) async{
-    while (context.mounted) {
+    print('scrolling');
+    while (context.mounted && widget.text.isNotEmpty) {
       await Future.delayed(Duration(milliseconds: widget.delay.toInt()));
       await _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
@@ -48,7 +48,7 @@ class _WScrollableAutoscrollingTextState extends State<WScrollableAutoscrollingT
         curve: Curves.linear,
       );
       await Future.delayed(Duration(milliseconds: 1000));
-      _scrollController.jumpTo(0);
+      _scrollController.jumpTo(0); 
     }
   }
 

@@ -15,6 +15,10 @@ class Routes {
         path: '/substitute',
         builder: (context, state) => SubPage(),
       ),
+      GoRoute(
+        path: '/loading', 
+        builder: (context, state) => LoginPage()
+      ),
     ],
   );
 }

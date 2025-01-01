@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
           child: FutureBuilder<List<dynamic>>(
             future: Future.wait([
               UserHelper.isUserInLs(),
-              UserHelper.getUserFromLs(context),
+              UserHelper.getUserFromLs(context), 
               HDropDown.getTeachers(context),
               HDropDown.getClasses(context),
             ]),

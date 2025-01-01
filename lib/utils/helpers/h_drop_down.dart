@@ -13,6 +13,8 @@ class HDropDown {
 
 static Future<bool> getTeachers(BuildContext context) async {
 
+    print("getTeachers");
+
     var res = await dio.get(teachersUrl);
     Map<String, dynamic> data = res.data;
     List<DropDownAble> teachers = (data["data"] as List).map((e) => DropDownAble.fromJson(e)).toList();
@@ -59,6 +61,8 @@ static Future<bool> getTeachers(BuildContext context) async {
 
 
   static Future<bool> getClasses(BuildContext context) async {
+
+    print("getClasses");
 
     var res = await dio.get(classesUrl);
     Map<String, dynamic> data = res.data;

@@ -30,7 +30,11 @@ static Future<bool> getSub(BuildContext context) async {
         return false;
     }
 
+    print("sub_url: $sub_url");
+
     var res = await Future.wait(sub_url.map((e) => dio.get(url + e)));
+
+    print(res);
 
     if (res.any((element) => element.statusCode != 200)) {
       return false;
