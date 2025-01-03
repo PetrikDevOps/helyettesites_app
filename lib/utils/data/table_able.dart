@@ -1,6 +1,12 @@
-class TableAble {
-  final String id;
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:helyettesites/utils/interfaces/i_table_able.dart';
+
+class TableAble implements ITableAble {
+
+  @override
   final DateTime date;
+
+  final String id;
   final bool consolidated;
   final String missingTeacerName;
   final String subingTeacherName;
@@ -11,8 +17,8 @@ class TableAble {
 
 
   const TableAble({
-    required this.id,
     required this.date,
+    required this.id,
     required this.consolidated,
     required  this.missingTeacerName,
     required  this.subingTeacherName,
@@ -39,5 +45,10 @@ class TableAble {
       roomName: json['room']['short'],
       className: json['class']['name'],
     );
-  } 
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    throw UnimplementedError();
+  }
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helyettesites/utils/models/drop_down_able.dart';
+import 'package:helyettesites/utils/data/drop_down_able.dart';
 
 class PClasses extends ChangeNotifier {
   List<DropDownAble> _classes = [];

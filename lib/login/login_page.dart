@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:helyettesites/login/login_form.dart';
 import 'package:helyettesites/user/user_helper.dart';
 import 'package:helyettesites/utils/helpers/h_drop_down.dart';
+import 'package:helyettesites/utils/providers/p_tables.dart';
 import 'package:helyettesites/utils/widgets/w_error.dart';
 import 'package:helyettesites/utils/widgets/w_loading.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key}); 
@@ -16,7 +18,7 @@ class LoginPage extends StatefulWidget {
 //Bulind the base of the login page 
 class _LoginPageState extends State<LoginPage> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -38,6 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               UserHelper.getUserFromLs(context), 
               HDropDown.getTeachers(context),
               HDropDown.getClasses(context),
+              context.read<PTables>().init(),
             ]),
             builder: (context, snapshot) {
               return AnimatedSwitcher(

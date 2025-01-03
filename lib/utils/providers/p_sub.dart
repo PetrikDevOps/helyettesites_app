@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:helyettesites/utils/models/table_able.dart';
+import 'package:helyettesites/utils/data/table_able.dart';
 
 class PSub extends ChangeNotifier{
   List<List<List<TableAble>>> _subs = [];
@@ -10,4 +10,5 @@ class PSub extends ChangeNotifier{
     notifyListeners();
   }
 
-} 
+}
+

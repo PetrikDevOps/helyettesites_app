@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:helyettesites/user/user.dart';
 import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/user/user_type.dart';
-import 'package:helyettesites/utils/models/table_able.dart';
+import 'package:helyettesites/utils/data/table_able.dart';
 import 'package:helyettesites/utils/providers/p_sub.dart';
 import 'package:helyettesites/utils/widgets/w_scrollable_autoscrolling_text.dart';
 import 'package:provider/provider.dart';
@@ -143,13 +143,13 @@ static Future<bool> getSub(BuildContext context) async {
                             
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                              SizedBox(width: width * 0.06, child: _buildScrollAbleText(context, e.lesson.toString(), Border(
+                              SizedBox(width: width * 0.12, child: _buildScrollAbleText(context, e.lesson.toString(), Border(
                                 right: BorderSide(color: Color(0x4FF0F0F0)),
                               ))),  
                               SizedBox(width: width * 0.18, child: _buildScrollAbleText(context, e.className, Border(
                                 right: BorderSide(color: Color(0x4FF0F0F0)),
                               ))),
-                              SizedBox(width: width * 0.69, child: _buildScrollAbleText(context, e.subingTeacherName, Border())),
+                              SizedBox(width: width * 0.63, child: _buildScrollAbleText(context, e.subingTeacherName, Border())),
                               
                               ],
                             ),
