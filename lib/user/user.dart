@@ -25,6 +25,19 @@ class User {
     return false;
     }
 
+  List<String> get url {
+    switch (userType) {
+      case UserType.student:
+        return ['?classId=$classId']; 
+      case UserType.teacher:
+        return ['?teacherId=$teacherId', '?missingTeacherId=$teacherId']; 
+      case UserType.guest:
+        return [''];
+      default:
+        return [];
+    }
+  }
+
   factory User.fromJson(Map<String, dynamic> json) {
     if (json['teacherId'] != null) {
       return User.teacher(name: json['name'], teacherId: json['teacherId']);
