@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:helyettesites/utils/data/t_table_able.dart';
 import 'package:helyettesites/utils/interfaces/i_table_able.dart';
 
-class TableAble implements ITableAble {
+class Subs implements ITableAble {
 
   @override
   final DateTime date;
@@ -20,7 +20,7 @@ class TableAble implements ITableAble {
   final int lesson;
 
 
-  const TableAble({
+  const Subs({
     required this.date,
     required this.id,
     required this.consolidated,
@@ -37,8 +37,8 @@ class TableAble implements ITableAble {
     return 'date: $date, missingTeacerName: $missingTeacerName, subingTeacherName: $subingTeacherName, className: $className, lesson: $lesson';
   }
 
-  factory TableAble.fromJson(Map<String, dynamic> json) {
-    return TableAble(
+  factory Subs.fromJson(Map<String, dynamic> json) {
+    return Subs(
       id: json['id'],
       date: DateTime.parse(json['date']),
       lesson: json['lesson'],
