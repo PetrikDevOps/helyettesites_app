@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:helyettesites/user/user.dart';
+import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/utils/data/table_able.dart';
 import 'package:helyettesites/utils/interfaces/i_table_able.dart';
+import 'package:helyettesites/utils/model/m_news.dart';
 import 'package:helyettesites/utils/model/m_room.dart';
+import 'package:helyettesites/utils/model/m_sub.dart';
+import 'package:provider/provider.dart';
 
 class PTables extends ChangeNotifier{
   final RoomModel _roomModel = RoomModel();
+  final SubModel _subModel = SubModel();
+  final NewsModel _newsModel = NewsModel();
   List<List<List<ITableAble>>> _tables = [];
   get tables => _tables;
 
@@ -59,13 +66,17 @@ class PTables extends ChangeNotifier{
     return [];
   }
 
-  Future<void> init() async {
+  Future<void> init(BuildContext context) async {
     List<ITableAble> rooms = [];
     List<ITableAble> subs = [];
     List<ITableAble> news = [];
 
+    User u = context.read<UserProvider>().user;
+
     try {
+      subs = await _subModel.fetchSubs(u);
       rooms = await _roomModel.fetchRooms();
+      news = await _newsModel.fetchNews();
     } catch (e) {
       print(e);
     }
@@ -75,6 +86,8 @@ class PTables extends ChangeNotifier{
       [subs],
       [news]
     ];
+
+    print(_tables);
     notifyListeners();
   }
 

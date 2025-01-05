@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
               UserHelper.getUserFromLs(context), 
               HDropDown.getTeachers(context),
               HDropDown.getClasses(context),
-              context.read<PTables>().init(),
+              context.read<PTables>().init(context),
             ]),
             builder: (context, snapshot) {
               return AnimatedSwitcher(
