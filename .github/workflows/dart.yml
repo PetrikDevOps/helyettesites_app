@@ -18,6 +18,10 @@ jobs:
         with:
           flutter-version: "stable" # You can specify a version like "3.13.0"
 
+      - name: Debug Flutter Action
+        run: flutter --version
+
+
       - name: Install dependencies
         run: flutter pub get
 
