@@ -3,7 +3,6 @@ import 'package:helyettesites/utils/data/t_table_able.dart';
 import 'package:helyettesites/utils/interfaces/i_table_able.dart';
 
 class Subs implements ITableAble {
-
   @override
   final DateTime date;
 
@@ -19,22 +18,20 @@ class Subs implements ITableAble {
   final String className;
   final int lesson;
 
-
-  const Subs({
-    required this.date,
-    required this.id,
-    required this.consolidated,
-    required  this.missingTeacerName,
-    required  this.subingTeacherName,
-    required  this.subjectName,
-    required  this.roomName,
-    required  this.className,
-    required this.lesson
-  });
+  const Subs(
+      {required this.date,
+      required this.id,
+      required this.consolidated,
+      required this.missingTeacerName,
+      required this.subingTeacherName,
+      required this.subjectName,
+      required this.roomName,
+      required this.className,
+      required this.lesson});
 
   @override
   String toString() {
-    return 'date: $date, missingTeacerName: $missingTeacerName, subingTeacherName: $subingTeacherName, className: $className, lesson: $lesson';
+    return 'Sub{date: $date, missingTeacerName: $missingTeacerName, subingTeacherName: $subingTeacherName, className: $className, lesson: $lesson}';
   }
 
   factory Subs.fromJson(Map<String, dynamic> json) {

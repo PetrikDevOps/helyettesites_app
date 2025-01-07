@@ -8,17 +8,16 @@ import 'package:helyettesites/utils/widgets/w_loading.dart';
 import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key}); 
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
-
-//Bulind the base of the login page 
+//Bulind the base of the login page
 class _LoginPageState extends State<LoginPage> {
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
@@ -31,23 +30,22 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-      child: Scaffold( 
-        backgroundColor: Colors.transparent, 
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
         body: SafeArea(
           child: FutureBuilder<List<dynamic>>(
             future: Future.wait([
               UserHelper.isUserInLs(),
-              UserHelper.getUserFromLs(context), 
+              UserHelper.getUserFromLs(context),
               HDropDown.getTeachers(context),
               HDropDown.getClasses(context),
-              context.read<PTables>().init(context),
             ]),
             builder: (context, snapshot) {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 500),
                 switchInCurve: Curves.easeIn,
                 switchOutCurve: Curves.easeOut,
-                transitionBuilder: (Widget child, Animation<double> animation) {                   
+                transitionBuilder: (Widget child, Animation<double> animation) {
                   return FadeTransition(opacity: animation, child: child);
                 },
                 child: _buildContent(snapshot, context),
@@ -59,24 +57,24 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   // Build content based on the state of the future snapshot
   Widget? _buildContent(AsyncSnapshot snapshot, BuildContext context) {
     if (snapshot.connectionState == ConnectionState.waiting) {
       return WLoading(
         key: ValueKey('loading'),
       );
-    } else if (snapshot.hasError || snapshot.data[2] == false || snapshot.data[3] == false) {
+    } else if (snapshot.hasError ||
+        snapshot.data[2] == false ||
+        snapshot.data[3] == false) {
       return WError(
         key: ValueKey('error'),
         error: snapshot.error.toString(),
       );
     } else {
-        return  Center(
-          key: ValueKey('login'),
-          child: LoginForm(),
-        );
-      }
+      return Center(
+        key: ValueKey('login'),
+        child: LoginForm(),
+      );
+    }
   }
 }
-
