@@ -73,12 +73,6 @@ class HTableAble {
       grouped.add(missingTeachersGroups);
     }
 
-    for (var e in grouped) {
-      for (var element in e) {
-        print(element);
-      }
-    }
-
     if (context.mounted) {
       context.read<PSub>().setSubs(grouped);
       return true;
