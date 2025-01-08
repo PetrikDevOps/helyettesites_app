@@ -5,7 +5,7 @@ import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/user/user_type.dart';
 import 'package:helyettesites/utils/data/table_able.dart';
 import 'package:helyettesites/utils/providers/p_sub.dart';
-//import 'package:helyettesites/utils/widgets/w_scrollable_autoscrolling_text.dart';
+import 'package:helyettesites/utils/widgets/w_scrollable_autoscrolling_text.dart';
 import 'package:provider/provider.dart';
 
 class HTableAble {
@@ -82,8 +82,8 @@ class HTableAble {
 
   static Widget _buildScrollAbleText(
       BuildContext context, String text, Border border) {
-    return Text("alma");
-    //return WScrollableAutoscrollingText(text: text, border: border);
+    return Text("a");
+    return WScrollableAutoscrollingText(text: text, border: border);
   }
 
   static Widget _buildTable(BuildContext context, List<TableAble> tb) {

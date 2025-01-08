@@ -10,7 +10,7 @@ import 'package:helyettesites/utils/model/m_room.dart';
 import 'package:helyettesites/utils/model/m_sub.dart';
 import 'package:provider/provider.dart';
 
-class PTables extends ChangeNotifier {
+class TablesViewModel extends ChangeNotifier {
   final RoomModel _roomModel = RoomModel();
   final SubModel _subModel = SubModel();
   final NewsModel _newsModel = NewsModel();
@@ -42,55 +42,11 @@ class PTables extends ChangeNotifier {
 
       grouped.add(typeGrouped);
     }
-
-    //[
-    //  //date
-    //  [
-    //    [
-    //    // type
-    //      [
-    //        //name
-    //        Room1
-    //        Room1
-    //        Room1
-    //      ]
-    //      [
-    //        Room2
-    //      ]
-    //    ]
-    //    [
-    //      [
-    //       news
-    //       news
-    //      ]
-    //    ]
-    //    [
-    //      [
-    //        Teacher1
-    //        Teacher1
-    //     ]
-    //      [
-    //        Teacher2
-    //        Teacher2
-    //      ]
-    //    ]
-    //  ]
-    //
-    //  //dec 20
-    //  [
-    //   [
-    //   Teacher1
-    //   Teacher1
-    //   ]
-    //   [
-    //   Teacher2
-    //   Teacher2
-    //   ]
-    //  ]
-
-    //]
-
     return grouped;
+  }
+
+  void setTables(List<List<List<ITableAble>>> value) {
+    _tables = value;
   }
 
   void setLoading(bool value) {
@@ -120,7 +76,7 @@ class PTables extends ChangeNotifier {
       ...news,
     ];
 
-    _tables = _convertedTables(all);
-    //setLoading(false);
+    setTables(_convertedTables(all));
+    ////setLoading(false);
   }
 }
