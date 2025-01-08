@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:helyettesites/user/user.dart';
 import 'package:helyettesites/user/user_type.dart';
 
-
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
@@ -42,22 +41,31 @@ class _LoginFormState extends State<LoginForm> {
     List<DropDownAble> toDisplay = _userType == UserType.student
         ? context.watch<PClasses>().classes
         : context.watch<PTeachers>().teachers;
-    List<DropdownMenuEntry<DropDownAble>> dropdownMenuItems = toDisplay.asMap().entries
+    List<DropdownMenuEntry<DropDownAble>> dropdownMenuItems = toDisplay
+        .asMap()
+        .entries
         .map((entry) => DropdownMenuEntry<DropDownAble>(
               value: entry.value,
-              label: entry.value.name,              style: ButtonStyle(
-                textStyle: MaterialStateProperty.all<TextStyle>(
+              label: entry.value.name,
+              style: ButtonStyle(
+                textStyle: WidgetStateProperty.all<TextStyle>(
                     TextStyle(color: Colors.white, fontSize: width * 0.04)),
-                backgroundColor: entry.value.id == actualId ? MaterialStateProperty.all<Color>(Color(0xFF25544B)) : entry.key % 2 == 0 ? MaterialStateProperty.all<Color>(Color(0x00000000)) : MaterialStateProperty.all<Color>(Color(0x10000000)),
-                foregroundColor: entry.value.id == actualId ? MaterialStateProperty.all<Color>(Color(0xFFFAFAF9)) : MaterialStateProperty.all<Color>(Color(0xFF25544B)),
-              
+                backgroundColor: entry.value.id == actualId
+                    ? WidgetStateProperty.all<Color>(Color(0xFF25544B))
+                    : entry.key % 2 == 0
+                        ? WidgetStateProperty.all<Color>(Color(0x00000000))
+                        : WidgetStateProperty.all<Color>(Color(0x10000000)),
+                foregroundColor: entry.value.id == actualId
+                    ? WidgetStateProperty.all<Color>(Color(0xFFFAFAF9))
+                    : WidgetStateProperty.all<Color>(Color(0xFF25544B)),
               ),
             ))
         .toList();
 
     return DropdownMenu(
-      menuStyle: MenuStyle( 
-        maximumSize: MaterialStateProperty.all<Size>(Size(width * 0.7, height * 0.5)), 
+      menuStyle: MenuStyle(
+        maximumSize:
+            WidgetStateProperty.all<Size>(Size(width * 0.7, height * 0.5)),
       ),
       initialSelection: _userType == UserType.student
           ? context.watch<PClasses>().selectedClass
@@ -97,7 +105,7 @@ class _LoginFormState extends State<LoginForm> {
                 color: Colors.white,
                 fontSize: width * 0.06,
                 fontWeight: FontWeight.bold)),
-        _buildDropDown(context), 
+        _buildDropDown(context),
       ],
     );
   }
@@ -110,18 +118,17 @@ class _LoginFormState extends State<LoginForm> {
         SizedBox(height: height * 0.025),
         SizedBox(
           width: width * 0.7,
-          child:
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Osztály: ",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: width * 0.06,
-                    fontWeight: FontWeight.bold)), 
-            _buildDropDown(context)
-          ],
-        ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Osztály: ",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: width * 0.06,
+                      fontWeight: FontWeight.bold)),
+              _buildDropDown(context)
+            ],
+          ),
         ),
         SizedBox(
           width: width * 0.7,
@@ -175,8 +182,7 @@ class _LoginFormState extends State<LoginForm> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
-              padding:
-                  EdgeInsets.fromLTRB(width * 0.05, 0, width * 0.05, 0),
+              padding: EdgeInsets.fromLTRB(width * 0.05, 0, width * 0.05, 0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -226,10 +232,10 @@ class _LoginFormState extends State<LoginForm> {
             ElevatedButton(
               style: ButtonStyle(
                 foregroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xFF25544B)),
+                    WidgetStateProperty.all<Color>(Color(0xFF25544B)),
                 backgroundColor:
-                    MaterialStateProperty.all<Color>(Color(0xFFFAFAF9)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    WidgetStateProperty.all<Color>(Color(0xFFFAFAF9)),
+                shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(width * 0.02),
                   ),
@@ -238,26 +244,25 @@ class _LoginFormState extends State<LoginForm> {
               onPressed: () {
                 if (_userType == UserType.student) {
                   String oName = name.text;
-                  String oClassId = Provider.of<PClasses>(context, listen: false)
-                      .selectedClass
-                      .id;
+                  String oClassId =
+                      Provider.of<PClasses>(context, listen: false)
+                          .selectedClass
+                          .id;
                   User s = User.student(name: oName, classId: oClassId);
-                  Provider.of<UserProvider>(context, listen: false)
-                      .setUser(s);
-                  } else if (_userType == UserType.teacher) {
+                  Provider.of<UserProvider>(context, listen: false).setUser(s);
+                } else if (_userType == UserType.teacher) {
                   String oName = Provider.of<PTeachers>(context, listen: false)
                       .selectedTeacher
                       .name;
-                  String oTeacherId = Provider.of<PTeachers>(context, listen: false)
-                      .selectedTeacher
-                      .id;
+                  String oTeacherId =
+                      Provider.of<PTeachers>(context, listen: false)
+                          .selectedTeacher
+                          .id;
                   User t = User.teacher(name: oName, teacherId: oTeacherId);
-                  Provider.of<UserProvider>(context, listen: false)
-                      .setUser(t);
+                  Provider.of<UserProvider>(context, listen: false).setUser(t);
                 } else {
                   User g = User.guest();
-                  Provider.of<UserProvider>(context, listen: false)
-                      .setUser(g);
+                  Provider.of<UserProvider>(context, listen: false).setUser(g);
                 }
                 context.go('/substitute');
               },
@@ -270,4 +275,3 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 }
-

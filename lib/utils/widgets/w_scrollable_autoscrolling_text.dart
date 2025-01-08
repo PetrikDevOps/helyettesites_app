@@ -39,7 +39,6 @@ class _WScrollableAutoscrollingTextState
   }
 
   void _scroll(BuildContext context) async {
-    print('scrolling');
     while (context.mounted && widget.text.isNotEmpty) {
       await Future.delayed(Duration(milliseconds: widget.delay.toInt()));
       await _scrollController.animateTo(

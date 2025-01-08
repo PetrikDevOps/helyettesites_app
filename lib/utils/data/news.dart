@@ -1,4 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/widgets.dart';
 import 'package:helyettesites/utils/data/t_table_able.dart';
 import 'package:helyettesites/utils/interfaces/i_table_able.dart';
 
@@ -22,10 +22,8 @@ class News implements ITableAble {
         news = json["news"],
         id = json["id"];
 
-
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     throw UnimplementedError();
   }
 }

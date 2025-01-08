@@ -11,19 +11,16 @@ class HDropDown {
   static String teachersUrl = "/teacher";
   static Dio dio = Dio(BaseOptions(baseUrl: url));
 
-static Future<bool> getTeachers(BuildContext context) async {
-
-    print("getTeachers");
-
+  static Future<bool> getTeachers(BuildContext context) async {
     var res = await dio.get(teachersUrl);
     Map<String, dynamic> data = res.data;
-    List<DropDownAble> teachers = (data["data"] as List).map((e) => DropDownAble.fromJson(e)).toList();
+    List<DropDownAble> teachers =
+        (data["data"] as List).map((e) => DropDownAble.fromJson(e)).toList();
 
     try {
       if (context.mounted) {
-      context.read<PTeachers>().setTeachers(
-        await Future.delayed(Duration(seconds: 2), () => teachers)
-      );
+        context.read<PTeachers>().setTeachers(
+            await Future.delayed(Duration(seconds: 2), () => teachers));
       }
       return true;
     } catch (e) {
@@ -31,10 +28,9 @@ static Future<bool> getTeachers(BuildContext context) async {
     }
   }
 
-  
-  static List<DropDownAble> sortStringsByNumberPart(List<DropDownAble> input) { 
+  static List<DropDownAble> sortStringsByNumberPart(List<DropDownAble> input) {
     String extractRelevantPart(String s) {
-      // Remove any prefix 
+      // Remove any prefix
       if (s.contains('/')) {
         s = s.split('/').last;
       }
@@ -44,7 +40,7 @@ static Future<bool> getTeachers(BuildContext context) async {
       return match?.group(0) ?? '0';
     }
 
-    //numeric sort 
+    //numeric sort
     input.sort((a, b) {
       int numA = int.parse(extractRelevantPart(a.name));
       int numB = int.parse(extractRelevantPart(b.name));
@@ -59,25 +55,21 @@ static Future<bool> getTeachers(BuildContext context) async {
     return input;
   }
 
-
   static Future<bool> getClasses(BuildContext context) async {
-
-    print("getClasses");
-
     var res = await dio.get(classesUrl);
     Map<String, dynamic> data = res.data;
-    List<DropDownAble> classes = (data["data"] as List).map((e) => DropDownAble.fromJson(e)).toList();
+    List<DropDownAble> classes =
+        (data["data"] as List).map((e) => DropDownAble.fromJson(e)).toList();
 
     classes = sortStringsByNumberPart(classes);
-  
+
+    if (!context.mounted) return false;
     try {
       context.read<PClasses>().setClasses(
-        await Future.delayed(Duration(seconds: 2), () => classes)
-      );
+          await Future.delayed(Duration(seconds: 2), () => classes));
       return true;
     } catch (e) {
       return false;
     }
   }
 }
-

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:helyettesites/user/user.dart';
@@ -14,7 +13,7 @@ class SubPage extends StatefulWidget {
   const SubPage({super.key});
 
   @override
-  _SubPageState createState() => _SubPageState();
+  State<SubPage> createState() => _SubPageState();
 }
 
 class _SubPageState extends State<SubPage> {
@@ -52,6 +51,7 @@ class _SubPageState extends State<SubPage> {
           ElevatedButton(
             onPressed: () async {
               await UserHelper.removeUserFromLs();
+              if (!context.mounted) return;
               context.read<UserProvider>().setUser(User.none());
               context.go('/home');
             },
