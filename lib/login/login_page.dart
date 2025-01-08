@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:helyettesites/login/login_form.dart';
 import 'package:helyettesites/user/user_helper.dart';
 import 'package:helyettesites/utils/helpers/h_drop_down.dart';
-import 'package:helyettesites/utils/providers/p_tables.dart';
 import 'package:helyettesites/utils/widgets/w_error.dart';
 import 'package:helyettesites/utils/widgets/w_loading.dart';
-import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

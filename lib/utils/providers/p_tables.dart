@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:helyettesites/user/user.dart';
 import 'package:helyettesites/user/user_provider.dart';
-import 'package:helyettesites/user/user_type.dart';
+
 import 'package:helyettesites/utils/data/t_table_able.dart';
-import 'package:helyettesites/utils/data/table_able.dart';
+
 import 'package:helyettesites/utils/interfaces/i_table_able.dart';
 import 'package:helyettesites/utils/model/m_news.dart';
 import 'package:helyettesites/utils/model/m_room.dart';
@@ -23,29 +23,25 @@ class PTables extends ChangeNotifier {
 
   List<List<List<ITableAble>>> _convertedTables(List<ITableAble> all) {
     List<DateTime> dates = all.map((e) => e.date).toSet().toList();
-    print('dates: $dates');
-
     List<List<List<ITableAble>>> grouped = [];
 
-    dates.forEach((date) {
+    for (var date in dates) {
       List<ITableAble> dateTables =
           all.where((element) => element.date == date).toList();
-      print('dateTables: $dateTables');
 
       List<TTableAble> types = dateTables.map((e) => e.type).toSet().toList();
 
       List<List<ITableAble>> typeGrouped = [];
 
-      types.forEach((type) {
+      for (var type in types) {
         List<ITableAble> typeTables =
             dateTables.where((element) => element.type == type).toList();
-        print('typeTables: $typeTables');
 
         typeGrouped.add(typeTables);
-      });
+      }
 
       grouped.add(typeGrouped);
-    });
+    }
 
     //[
     //  //date
@@ -103,7 +99,6 @@ class PTables extends ChangeNotifier {
   }
 
   Future<void> init(BuildContext context) async {
-    print('init');
     //setLoading(true);
 
     List<ITableAble> rooms = [];
@@ -116,7 +111,7 @@ class PTables extends ChangeNotifier {
       rooms = await _roomModel.fetchRooms();
       news = await _newsModel.fetchNews();
     } catch (e) {
-      print(e);
+      rethrow;
     }
 
     List<ITableAble> all = [
@@ -126,19 +121,6 @@ class PTables extends ChangeNotifier {
     ];
 
     _tables = _convertedTables(all);
-    print('converted');
-    print("-----");
-    _tables.forEach((element) {
-      element.forEach((e) {
-        print(e);
-      });
-    });
-    print("-----");
-
     //setLoading(false);
-  }
-
-  void setSubs(List<List<List<ITableAble>>> tables) {
-    _tables = tables;
   }
 }

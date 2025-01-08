@@ -5,7 +5,7 @@ import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/user/user_type.dart';
 import 'package:helyettesites/utils/data/table_able.dart';
 import 'package:helyettesites/utils/providers/p_sub.dart';
-import 'package:helyettesites/utils/widgets/w_scrollable_autoscrolling_text.dart';
+//import 'package:helyettesites/utils/widgets/w_scrollable_autoscrolling_text.dart';
 import 'package:provider/provider.dart';
 
 class HTableAble {
@@ -14,29 +14,25 @@ class HTableAble {
 
   static Future<bool> getSub(BuildContext context) async {
     User user = context.read<UserProvider>().user;
-    List<String> sub_url = [];
+    List<String> subUrl = [];
     switch (user.userType) {
       case UserType.student:
-        sub_url = ['?classId=${user.classId}'];
+        subUrl = ['?classId=${user.classId}'];
         break;
       case UserType.teacher:
-        sub_url = [
+        subUrl = [
           '?teacherId=${user.teacherId}',
           '?missingTeacherId=${user.teacherId}'
         ];
         break;
       case UserType.guest:
-        sub_url = [''];
+        subUrl = [''];
         break;
       default:
         return false;
     }
 
-    print("sub_url: $sub_url");
-
-    var res = await Future.wait(sub_url.map((e) => dio.get(url + e)));
-
-    print(res);
+    var res = await Future.wait(subUrl.map((e) => dio.get(url + e)));
 
     if (res.any((element) => element.statusCode != 200)) {
       return false;
@@ -48,40 +44,40 @@ class HTableAble {
 
     List<TableAble> temp = [];
 
-    res.forEach((element) {
+    for (var element in res) {
       List<TableAble> tables = (element.data["data"] as List)
           .map((e) => TableAble.fromJson(e))
           .toList();
       temp.addAll(tables);
-    });
+    }
 
     List<DateTime> dates = temp.map((e) => e.date).toSet().toList();
 
     List<List<List<TableAble>>> grouped = [];
 
-    dates.forEach((date) {
+    for (var date in dates) {
       List<TableAble> temp2 =
           temp.where((element) => element.date == date).toList();
       List<String> missingTeacherNames =
           temp2.map((e) => e.missingTeacerName).toSet().toList();
 
       List<List<TableAble>> missingTeachersGroups = [];
-      missingTeacherNames.forEach((missingTeacher) {
+      for (var missingTeacher in missingTeacherNames) {
         List<TableAble> temp3 = temp2
             .where((element) => element.missingTeacerName == missingTeacher)
             .toList();
         temp3.sort((a, b) => a.lesson.compareTo(b.lesson));
         missingTeachersGroups.add(temp3);
-      });
+      }
 
       grouped.add(missingTeachersGroups);
-    });
+    }
 
-    grouped.forEach((e) {
-      e.forEach((element) {
+    for (var e in grouped) {
+      for (var element in e) {
         print(element);
-      });
-    });
+      }
+    }
 
     if (context.mounted) {
       context.read<PSub>().setSubs(grouped);
@@ -93,7 +89,7 @@ class HTableAble {
   static Widget _buildScrollAbleText(
       BuildContext context, String text, Border border) {
     return Text("alma");
-    return WScrollableAutoscrollingText(text: text, border: border);
+    //return WScrollableAutoscrollingText(text: text, border: border);
   }
 
   static Widget _buildTable(BuildContext context, List<TableAble> tb) {
@@ -214,7 +210,7 @@ class HTableAble {
                   ],
                 ),
               );
-            }).toList(),
+            }),
           ]),
         ),
       ),
@@ -264,9 +260,7 @@ class HTableAble {
                                   fontSize: width * 0.06)),
                         ],
                       ),
-                      ...subs[index]
-                          .map((e) => _buildTable(context, e))
-                          .toList(),
+                      ...subs[index].map((e) => _buildTable(context, e)),
                     ],
                   ),
                 ),
