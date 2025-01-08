@@ -82,7 +82,7 @@ class HTableAble {
 
   static Widget _buildScrollAbleText(
       BuildContext context, String text, Border border) {
-    return Text("a");
+    //return Text("a");
     return WScrollableAutoscrollingText(text: text, border: border);
   }
 
