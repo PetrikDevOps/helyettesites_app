@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:helyettesites/user/user.dart';
 import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/view_models/p_tables.dart';
+import 'package:helyettesites/views/w_table.dart';
 import 'package:provider/provider.dart';
 
 class SubDisplayPage extends StatelessWidget {
@@ -34,6 +35,7 @@ class SubDisplayPage extends StatelessWidget {
         return Column(
           children: [
             Text('Dátum: ${tables.tables[index][0][0].date}'),
+            WTable(tables: tables.tables[index][0]),
           ],
         );
       },

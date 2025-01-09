@@ -59,13 +59,12 @@ class HTableAble {
       List<TableAble> temp2 =
           temp.where((element) => element.date == date).toList();
       List<String> missingTeacherNames =
-          temp2.map((e) => e.missingTeacerName).toSet().toList();
+          temp2.map((e) => e.name).toSet().toList();
 
       List<List<TableAble>> missingTeachersGroups = [];
       for (var missingTeacher in missingTeacherNames) {
-        List<TableAble> temp3 = temp2
-            .where((element) => element.missingTeacerName == missingTeacher)
-            .toList();
+        List<TableAble> temp3 =
+            temp2.where((element) => element.name == missingTeacher).toList();
         temp3.sort((a, b) => a.lesson.compareTo(b.lesson));
         missingTeachersGroups.add(temp3);
       }
@@ -104,7 +103,7 @@ class HTableAble {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Text(tb[0].missingTeacerName,
+                Text(tb[0].name,
                     style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Color(0xDFFFFFFF),

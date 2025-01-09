@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:helyettesites/utils/data/t_table_able.dart';
 import 'package:helyettesites/utils/interfaces/i_table_able.dart';
 
 class TableAble implements ITableAble {
-
   @override
   final DateTime date;
 
@@ -12,29 +10,29 @@ class TableAble implements ITableAble {
   @override
   final TTableAble type = TTableAble.sub;
   final bool consolidated;
-  final String missingTeacerName;
+
+  @override
+  final String name;
   final String subingTeacherName;
   final String subjectName;
   final String roomName;
   final String className;
   final int lesson;
 
-
-  const TableAble({
-    required this.date,
-    required this.id,
-    required this.consolidated,
-    required  this.missingTeacerName,
-    required  this.subingTeacherName,
-    required  this.subjectName,
-    required  this.roomName,
-    required  this.className,
-    required this.lesson
-  });
+  const TableAble(
+      {required this.date,
+      required this.id,
+      required this.consolidated,
+      required this.name,
+      required this.subingTeacherName,
+      required this.subjectName,
+      required this.roomName,
+      required this.className,
+      required this.lesson});
 
   @override
   String toString() {
-    return 'date: $date, missingTeacerName: $missingTeacerName, subingTeacherName: $subingTeacherName, className: $className, lesson: $lesson';
+    return 'date: $date, missingTeacerName: $name, subingTeacherName: $subingTeacherName, className: $className, lesson: $lesson';
   }
 
   factory TableAble.fromJson(Map<String, dynamic> json) {
@@ -43,16 +41,11 @@ class TableAble implements ITableAble {
       date: DateTime.parse(json['date']),
       lesson: json['lesson'],
       consolidated: json['consolidated'],
-      missingTeacerName: json['missingTeacher']['name'],
+      name: json['missingTeacher']['name'],
       subingTeacherName: json['teacher']['name'],
       subjectName: json['subject']['name'],
       roomName: json['room']['short'],
       className: json['class']['name'],
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    throw UnimplementedError();
   }
 }
