@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:helyettesites/login/login_page.dart';
+import 'package:helyettesites/substitutions/sub_display_page.dart';
 import 'package:helyettesites/substitutions/sub_page.dart';
 
 class Routes {
@@ -13,12 +14,13 @@ class Routes {
       ),
       GoRoute(
         path: '/substitute',
-        builder: (context, state) => SubPage(),
+        builder: (context, state) => SubDisplayPage(),
       ),
       GoRoute(
-        path: '/loading', 
-        builder: (context, state) => LoginPage()
+        path: '/substitute',
+        builder: (context, state) => SubPage(),
       ),
+      GoRoute(path: '/loading', builder: (context, state) => LoginPage()),
     ],
   );
 }

@@ -6,7 +6,6 @@ import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/utils/helpers/h_table_able.dart';
 import 'package:helyettesites/utils/widgets/w_error.dart';
 import 'package:helyettesites/utils/widgets/w_loading.dart';
-import 'package:helyettesites/view_models/p_tables.dart';
 import 'package:provider/provider.dart';
 
 class SubPage extends StatefulWidget {
@@ -66,7 +65,6 @@ class _SubPageState extends State<SubPage> {
   @override
   Widget build(BuildContext context) {
     final User u = context.watch<UserProvider>().user;
-    context.read<TablesViewModel>().init(context);
 
     return Container(
       decoration: BoxDecoration(

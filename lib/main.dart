@@ -23,6 +23,7 @@ class PetrikApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    context.read<TablesViewModel>().init(context);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp.router(

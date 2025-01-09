@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:helyettesites/models/error.dart';
 import 'package:helyettesites/user/user.dart';
 import 'package:helyettesites/user/user_provider.dart';
 
@@ -15,9 +16,11 @@ class TablesViewModel extends ChangeNotifier {
   final SubModel _subModel = SubModel();
   final NewsModel _newsModel = NewsModel();
 
+  SError? _error;
   bool _isLoading = false;
   List<List<List<ITableAble>>> _tables = [];
 
+  get error => _error;
   get tables => _tables;
   get isLoading => _isLoading;
 
@@ -54,8 +57,12 @@ class TablesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setError(SError value) {
+    _error = value;
+  }
+
   Future<void> init(BuildContext context) async {
-    //setLoading(true);
+    setLoading(true);
 
     List<ITableAble> rooms = [];
     List<ITableAble> subs = [];
@@ -67,8 +74,10 @@ class TablesViewModel extends ChangeNotifier {
       rooms = await _roomModel.fetchRooms();
       news = await _newsModel.fetchNews();
     } catch (e) {
-      rethrow;
+      setError(SError(e.toString()));
     }
+
+    await Future.delayed(Duration(seconds: 1));
 
     List<ITableAble> all = [
       ...rooms,
@@ -77,6 +86,6 @@ class TablesViewModel extends ChangeNotifier {
     ];
 
     setTables(_convertedTables(all));
-    ////setLoading(false);
+    setLoading(false);
   }
 }

@@ -7,6 +7,6 @@ class SubNavbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       key: ValueKey('subNavbar'),
-      );
+    );
   }
 }

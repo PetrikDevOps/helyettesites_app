@@ -5,7 +5,7 @@ import 'package:helyettesites/user/user_provider.dart';
 import 'package:helyettesites/user/user_type.dart';
 import 'package:helyettesites/utils/data/table_able.dart';
 import 'package:helyettesites/utils/providers/p_sub.dart';
-import 'package:helyettesites/utils/widgets/w_scrollable_autoscrolling_text.dart';
+import 'package:helyettesites/views/w_scrollable_autoscrolling_text.dart';
 import 'package:provider/provider.dart';
 
 class HTableAble {
