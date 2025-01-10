@@ -14,7 +14,7 @@ void main() {
     ChangeNotifierProvider(create: (context) => PTeachers()),
     ChangeNotifierProvider(create: (context) => PClasses()),
     ChangeNotifierProvider(create: (context) => PSub()),
-    ChangeNotifierProvider(create: (context) => TablesViewModel()),
+    ChangeNotifierProvider(create: (context) => TablesViewModel(context)),
   ], child: const PetrikApp()));
 }
 
@@ -23,7 +23,6 @@ class PetrikApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<TablesViewModel>().init(context);
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp.router(

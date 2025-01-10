@@ -24,6 +24,10 @@ class TablesViewModel extends ChangeNotifier {
   get tables => _tables;
   get isLoading => _isLoading;
 
+  TablesViewModel(BuildContext context) {
+    init(context);
+  }
+
   List<List<List<ITableAble>>> _convertedTables(List<ITableAble> all) {
     List<DateTime> dates = all.map((e) => e.date).toSet().toList();
     List<List<List<ITableAble>>> grouped = [];
